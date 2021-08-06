@@ -19,5 +19,18 @@ def extract_job_title(soup):
                 jobs.append(span.text)
     return(jobs)
 
+def extract_company_name(soup):
+    companies = []
+    for span in soup.find_all(name = "span", attrs = {"class": "companyName"}):
+        if len(span.text) > 0:
+            companies.append(span.text)
+        else:
+            for a in span.find_all(name = "a", attrs = {"class" : "turnstileLink"}):
+                companies.append(a.text)
+    if len(companies) > 15 or len(companies) < 15:
+        return("Error")
+    else:
+        return(companies)
 
-print(extract_job_title(soup))
+
+print(extract_company_name(soup))
