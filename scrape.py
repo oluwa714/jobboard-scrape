@@ -2,14 +2,15 @@ import requests
 import bs4
 from bs4 import BeautifulSoup
 import re
+import os
 
 import pandas as pd
 import time
 
 url = "https://www.indeed.com/jobs?q=sql&l=Plano%2C%20TX&vjk=4f00ab261a80c44f"
-
 page = requests.get(url)
 soup = BeautifulSoup(page.text, "html.parser")
+
 
 def extract_job_title(soup):
     jobs = []
@@ -32,5 +33,18 @@ def extract_company_name(soup):
     else:
         return(companies)
 
+def extract_job_location(soup):
+    location = []
+    for div in soup.find.all(name = "div", attrs = {"class" : "companyLocation"}):
+        location.append(div.text)
+    return(location)
 
-print(extract_company_name(soup))
+def extract_job_link(soup):
+    links = []
+    for a in soup.find_all(name = "a", attrs = {"class" : "tapItem"}):
+        links.append(a.get("href"))
+    return (links)
+
+
+
+print(extract_job_description(soup))
